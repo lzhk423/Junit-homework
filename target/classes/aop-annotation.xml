@@ -1,0 +1,41 @@
+<!--<?xml version="1.0" encoding="UTF-8"?>-->
+<!--<beans xmlns="http://www.springframework.org/schema/beans"-->
+<!--       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"-->
+<!--       xmlns:context="http://www.springframework.org/schema/context"-->
+<!--       xmlns:aop="http://www.springframework.org/schema/aop"-->
+<!--       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/aop https://www.springframework.org/schema/aop/spring-aop.xsd">-->
+<!--&lt;!&ndash;-->
+<!--AOP 的注意事项-->
+<!--切面类和目标类都要交给ioc容器管理-->
+
+<!--&ndash;&gt;-->
+<!--    <context:component-scan base-package="com.atguigu.spring.aop.annotion"></context:component-scan>-->
+<!--&lt;!&ndash;    开启基于注解的aop&ndash;&gt;-->
+<!--    <aop:aspectj-autoproxy />-->
+<!--</beans>-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop.xsd">
+    <bean id="calculator" class="com.atguigu.spring.aop.annotion.CalculatorImpl" />
+    <!-- 定义切面类 -->
+    <bean id="loggerAspect" class="com.atguigu.spring.aop.annotion.LoggerAspect" />
+
+    <!-- 配置AOP -->
+    <aop:config>
+        <!-- 定义切点 -->
+        <aop:pointcut id="pointCut" expression="execution(* com.atguigu.spring.aop.annotion.CalculatorImpl.*(..))" />
+        <!-- 定义通知 -->
+        <aop:aspect ref="loggerAspect">
+            <aop:before method="beforeAdviceMethod" pointcut-ref="pointCut" />
+            <aop:after method="afterAdviceMethod" pointcut-ref="pointCut" />
+            <aop:after-returning method="afterReturningAdviceMethod" pointcut-ref="pointCut" returning="result" />
+            <aop:after-throwing method="afterThrowingAdviceMethod" pointcut-ref="pointCut" throwing="ex" />
+            <aop:around method="aroundAdviceMethod" pointcut-ref="pointCut" />
+        </aop:aspect>
+    </aop:config>
+
+</beans>
